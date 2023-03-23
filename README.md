@@ -63,8 +63,8 @@ pip install umi_tools
 
 **picard**
 
-1. Download *picard* from this GitHub.
-2. Drag and drop picard into Hoffman2 home directory.
+1. Download *picard.jar* from this GitHub.
+2. Drag and drop picard.jar into Hoffman2 home directory.
 
 > NOTE:
 > This is a sketchy way of downloading it. This will have to do for now.
