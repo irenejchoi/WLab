@@ -25,15 +25,15 @@ All the bioinformatics processing and analysis for plasma and saliva cfDNA used 
 wget http://opengene.org/fastp/fastp
 chmod a+x ./fastp
 ```
-4. Double check that you have fastp in Hoffman2 home directory.
+4. Double check that you have *fastp* in Hoffman2 home directory.
 
 **qualimap**
 
 1. Click on this link: http://qualimap.conesalab.org/.
 2. Go to this section: *Downloads*.
 3. Download *qualimap_v2.2.1.zip* and unzip.
-4. Drag and drop unzipped qualimap_v2.2.1 folder into Hoffman2 home directory.
-5. Double check that you have qualimap_v2.2.1 in Hoffman2 home directory.
+4. Drag and drop unzipped *qualimap_v2.2.1* folder into Hoffman2 home directory.
+5. Double check that you have *qualimap_v2.2.1* in Hoffman2 home directory.
 
 **srsly-umi**
 
@@ -64,7 +64,7 @@ pip install umi_tools
 **picard**
 
 1. Download *picard.jar* from this GitHub.
-2. Drag and drop picard.jar into Hoffman2 home directory.
+2. Drag and drop *picard.jar* into Hoffman2 home directory.
 
 > NOTE:
 > This is a sketchy way of downloading it. This will have to do for now.
@@ -73,7 +73,7 @@ pip install umi_tools
 **blacklist regions**
 
 1. Download *blacklist.bed* from this GitHub.
-2. Drag and drop blacklist.bed into Hoffman2 home directory.
+2. Drag and drop *blacklist.bed* into Hoffman2 home directory.
 
 > NOTE:
 > These are the blacklisted regions we are removing!
