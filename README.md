@@ -84,7 +84,7 @@ pip install umi_tools
 > NOTE:
 > Please make sure all the packages are downloaded before running the scripts!
 
-Scripts use 3 arguments: 
+**Scripts use 3 arguments:**
 1. Directory of your input file (DO NOT INCLUDE FILENAME!)
 ```
 /u/INPUT_DIRECTORY/
@@ -105,5 +105,5 @@ For example, you can run the following command to submit as a job on Hoffman2:
 ```
 qsub run_pipeline_saliva.sh /u/home/c/choi/ S_H7 /u/scratch/c/choi/saliva/
 ```
-This means I have the pair /u/home/c/choi/S_H7_R1.fastq.gz and /u/home/c/choi/S_H7_R3.fastq.gz of files that I want to process!
-I want to output my processed files into the directory /u/scratch/c/choi/saliva/.
+This means I have the pair */u/home/c/choi/S_H7_R1.fastq.gz* and */u/home/c/choi/S_H7_R3.fastq.gz* of files that I want to process!
+I want to output my processed files into the directory */u/scratch/c/choi/saliva/*.
