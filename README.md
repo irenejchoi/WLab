@@ -92,7 +92,7 @@ pip install umi_tools
 2. Name of the sample file (DO NOT INCLUDE DIRECTORY!)
 > NOTE:
 > You should have a pair of files.
-> Please change the name to SAMPLE_R1.fastq.gz and SAMPLE_R3.fastq.gz if not already done so!
+> Please change the name to *SAMPLE_R1.fastq.gz* and *SAMPLE_R3.fastq.gz* if not already done so!
 ```
 FILENAME
 ```
