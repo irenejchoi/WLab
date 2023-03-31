@@ -77,3 +77,33 @@ pip install umi_tools
 
 > NOTE:
 > These are the blacklisted regions we are removing!
+
+
+## How to use plasma and saliva processing scripts
+
+> NOTE:
+> Please make sure all the packages are downloaded before running the scripts!
+
+Scripts use 3 arguments: 
+1. Directory of your input file (DO NOT INCLUDE FILENAME!)
+```
+/u/INPUT_DIRECTORY/
+```
+2. Name of the sample file (DO NOT INCLUDE DIRECTORY!)
+> NOTE:
+> You should have a pair of files.
+> Please change the name to SAMPLE_R1.fastq.gz and SAMPLE_R3.fastq.gz if not already done so!
+```
+FILENAME
+```
+3. Directory of your output file (DO NOT INCLUDE FILENAME!)
+```
+/u/OUTPUT_DIRECTORY/
+```
+
+For example, you can run the following command to submit as a job on Hoffman2: 
+```
+qsub run_pipeline_saliva.sh /u/home/c/choi/ S_H7 /u/scratch/c/choi/saliva/
+```
+This means I have the pair /u/home/c/choi/S_H7_R1.fastq.gz and /u/home/c/choi/S_H7_R3.fastq.gz of files that I want to process!
+I want to output my processed files into the directory /u/scratch/c/choi/saliva/.
