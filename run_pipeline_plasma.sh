@@ -1,4 +1,4 @@
-# UPDATED BY IRENE CHOI 22 Mar 2023
+# UPDATED BY IRENE CHOI 14 APR 2023
 
 #!/bin/bash
 #$ -cwd
@@ -6,7 +6,7 @@
 #$ -o joblog.$JOB_ID
 #$ -j y
 # Edit the line below as needed
-#$ -l h_rt=4:00:00,h_data=4G
+#$ -l h_rt=12:00:00,h_data=8G
 # Add multiple cores/nodes as needed:
 #$ -pe shared 4
 # Email address to notify
@@ -25,7 +25,7 @@ export PATH=$PATH:~/.local/bin
 
 # substitute the command to run your code below:
 
-# use 3 arguments: 
+# use 2 arguments: 
 # [1] /u/INPUT_DIRECTORY (do not include FILENAME) 
 # [2] FILENAME (do not include _R1 or _R3, use ONLY sample name)
 # [3] /u/OUTPUT_DIRECTORY
@@ -36,7 +36,7 @@ mkdir $3$2"_processing"
   
 # merge reads (download bbmap)
 cd bbmap
-./bbmerge.sh in1=$1$2"_R1.fastq.gz" in2=$1$2"_R3.fastq.gz" out=$3$2"_processing/"$2"_merged.fastq.gz"
+./bbmerge.sh in1=$1$2"_R1_001.fastq.gz" in2=$1$2"_R3_001.fastq.gz" out=$3$2"_processing/"$2"_merged.fastq.gz"
 
 echo "___________BBMAP___________"
 
@@ -107,12 +107,44 @@ samtools index $3$2"_processing/"$2"_sorted_2.bam"
 
 echo "___________INDEX2___________"
 
+# remove soft and hard clips
+module load samtools
+samtools view -H $3$2"_processing/"$2"_sorted_2.bam" > $3$2"_processing/"$2"_SCHC.sam"
+samtools view $3$2"_processing/"$2"_sorted_2.bam" |awk '$6  !~ /S/ &&   $6  !~ /H/ && $6  ~ /M/  {print}' >>  $3$2"_processing/"$2"_SCHC.sam"
+
+echo "___________SCHC___________"
+
+# convert sam to bam
+module load samtools
+samtools view -bS $3$2"_processing/"$2"_SCHC.sam" > $3$2"_processing/"$2"_SCHC.bam"
+
+echo "___________SAM2BAM___________"
+
+# sort bam
+module load samtools
+samtools sort -o $3$2"_processing/"$2"_sorted_3.bam" $3$2"_processing/"$2"_SCHC.bam"
+
+echo "___________SORT3___________"
+
+# index bam
+module load samtools
+samtools index $3$2"_processing/"$2"_sorted_3.bam"
+
+echo "___________INDEX3___________"
+
 # export human reads
 module load samtools
-samtools view -b $3$2"_processing/"$2"_sorted_2.bam"  chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > $3$2"_processing/"$2"_nuc.bam"
-samtools view -b $3$2"_processing/"$2"_sorted_2.bam" chrM > $3$2"_processing/"$2"_mit.bam" 
+samtools view -b $3$2"_processing/"$2"_sorted_3.bam"  chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > $3$2"_processing/"$2"_nuc.bam"
+samtools view -b $3$2"_processing/"$2"_sorted_3.bam" chrM > $3$2"_processing/"$2"_mit.bam" 
 
 echo "___________NUC/MIT___________"
+
+
+# remove blacklisted regions
+module load bedtools
+bedtools intersect -v -abam $3$2"_processing/"$2"_nuc.bam" -b /u/home/c/choi/blacklist.bed > $3$2"_processing/"$2"_blacklisted.bam"
+
+echo "___________BLACKLIST___________"
 
 # final qualimap
 cd /u/home/c/choi/qualimap_v2.2.1/
@@ -120,15 +152,14 @@ cd /u/home/c/choi/qualimap_v2.2.1/
 
 echo "___________QC2___________"
 
-# remove soft and hard clips
+# sort bam
 module load samtools
-samtools view -H $3$2"_processing/"$2"_nuc.bam" > $3$2"_processing/"$2"_nuc_SCHC.sam"
-samtools view $3$2"_processing/"$2"_nuc_SCHC.sam" |awk '$6  !~ /S/ &&   $6  !~ /H/ && $6  ~ /M/  {print}' >>  $3$2"_processing/"$2"_nuc_SCHC.sam"
+samtools sort -o $3$2"_processing/"$2"_sorted_blacklisted.bam" $3$2"_processing/"$2"_blacklisted.bam"
 
-echo "___________SCHC___________"
+echo "___________SORT4___________"
 
-# remove blacklisted regions
-module load bedtools
-bedtools intersect -v -abam $3$2"_processing/"$2"_nuc.bam" -b /u/home/c/choi/blacklist.bed > $3$2"_processing/"$2"_blacklisted.bam"
+# index bam
+module load samtools
+samtools index $3$2"_processing/"$2"_sorted_blacklisted.bam"
 
-echo "___________BLACKLIST___________"
+echo "___________INDEX4___________"
