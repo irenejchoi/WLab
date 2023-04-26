@@ -1,4 +1,4 @@
-# UPDATED BY IRENE CHOI 18 Apr 2023
+# UPDATED BY IRENE CHOI 3 Mar 2023
 
 #!/bin/bash
 #$ -cwd
@@ -6,7 +6,7 @@
 #$ -o joblog.$JOB_ID
 #$ -j y
 # Edit the line below as needed
-#$ -l h_rt=2:00:00,h_data=2G
+#$ -l h_rt=4:00:00,h_data=4G
 # Add multiple cores/nodes as needed:
 #$ -pe shared 4
 # Email address to notify
@@ -22,22 +22,31 @@ echo " "
 # load the job environment:
 source /u/local/Modules/default/init/modules.sh
 export PATH=$PATH:~/.local/bin
+module load samtools
+module load python
 
 # substitute the command to run your code below:
 
 # use 2 arguments: 
-# [1] /u/INPUT_DIRECTORY (do not include FILENAME) 
-# [2] FILENAME (do not include _R1 or _R3, use ONLY sample name)
-# ex: qsub run_insert_size.sh /u/home/c/choi/ P_H7
+# [1] /u/DIRECTORY (do not include FILE.bam) 
+# [2] .bam FILENAME (without .bam) 
 
-# create analysis directory
-mkdir $1$2"_analysis"
+# create motif directory
+mkdir $1$2"_motif"
 
 # convert bam to sam
 module load samtools
-samtools view $1$2"_processing/"$2"_sorted_blacklisted.bam" -@ 4 | cut -f10 | awk '{print length}' | sort | uniq -c > $1$2"_analysis/"$2"_insert_size.txt"
+samtools view $1$2".bam" -o $1$2".sam" -O sam
 
-echo "___________INSERTSIZE___________"
+echo "___________BAM2SAM___________"
+
+# run motif.py
+python3 /u/scratch/c/choi/motif.py $1$2".sam"
+
+echo "___________MOTIF___________"
+
+# cleanup
+rm -rf $1$2".sam"
 
 # echo job info on joblog:
 echo " " 
