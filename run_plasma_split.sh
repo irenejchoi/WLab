@@ -1,4 +1,4 @@
-# UPDATED BY IRENE CHOI 18 Apr 2023
+# UPDATED BY IRENE CHOI 14 Jun 2023
 
 #!/bin/bash
 #$ -cwd
@@ -34,8 +34,8 @@ export PATH=$PATH:~/.local/bin
 module load anaconda3
 module load python
 conda activate dt_choi
-alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 25 --maxFragmentLength 99 -o $1$2"_processing/"$2"_ultrashort.bam"
-alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 100 --maxFragmentLength 250 -o $1$2"_processing/"$2"_mononucleosomal.bam"
+alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 40 --maxFragmentLength 70 -o $1$2"_processing/"$2"_ultrashort.bam"
+alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 120 --maxFragmentLength 250 -o $1$2"_processing/"$2"_mononucleosomal.bam"
 conda deactivate
 
 echo "___________US/MN___________"
@@ -53,6 +53,13 @@ samtools index $1$2"_processing/"$2"_sorted_us.bam"
 samtools index $1$2"_processing/"$2"_sorted_mn.bam"
 
 echo "___________INDEX_US/MN___________"
+
+# us/mn qualimap
+cd /u/home/c/choi/qualimap_v2.2.1/
+./qualimap bamqc -bam $1$2"_processing/"$2"_sorted_us.bam" -outdir $1$2"_processing/"$2"_us.QC" --java-mem-size=15G
+./qualimap bamqc -bam $1$2"_processing/"$2"_sorted_mn.bam" -outdir $1$2"_processing/"$2"_mn.QC" --java-mem-size=15G
+
+echo "___________QC3___________"
 
 # echo job info on joblog:
 echo " " 
