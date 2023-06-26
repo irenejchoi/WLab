@@ -25,7 +25,7 @@ export PATH=$PATH:~/.local/bin
 
 # substitute the command to run your code below:
 
-# use 3 arguments: 
+# use 2 arguments: 
 # [1] /u/INPUT_DIRECTORY (do not include FILENAME) 
 # [2] FILENAME (do not include _R1 or _R3, use ONLY sample name)
 # [3] /u/OUTPUT_DIRECTORY

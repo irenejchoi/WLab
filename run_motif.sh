@@ -32,7 +32,7 @@ module load python
 # [2] .bam FILENAME (without .bam) 
 
 # create motif directory
-mkdir $1$2"_motif"
+# mkdir $1$2"_analysis"
 
 # convert bam to sam
 module load samtools
@@ -41,7 +41,7 @@ samtools view $1$2".bam" -o $1$2".sam" -O sam
 echo "___________BAM2SAM___________"
 
 # run motif.py
-python3 /u/scratch/c/choi/motif.py $1$2".sam"
+python3 /u/home/c/choi/motif.py $1$2".sam"
 
 echo "___________MOTIF___________"
 

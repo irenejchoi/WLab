@@ -22,7 +22,7 @@ echo " "
 # load the job environment:
 source /u/local/Modules/default/init/modules.sh
 export PATH=$PATH:~/.local/bin
-export PATH=$PATH:/u/home/c/choi/fastaRegexFinde.py:~/.local/bin
+export PATH=$PATH:/u/home/c/choi/fastaRegexFinder.py:~/.local/bin
 
 # substitute the command to run your code below:
 
