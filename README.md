@@ -79,7 +79,7 @@ pip install umi_tools
 > These are the blacklisted regions we are removing!
 
 
-## How to use plasma and saliva processing scripts
+## How to use plasma and saliva pre-processing scripts
 
 > NOTE:
 > Please make sure all the packages are downloaded before running the scripts!
@@ -107,3 +107,6 @@ qsub run_pipeline_saliva.sh /u/home/c/choi/ S_H7 /u/scratch/c/choi/saliva/
 ```
 This means I have the pair */u/home/c/choi/S_H7_R1.fastq.gz* and */u/home/c/choi/S_H7_R3.fastq.gz* of files that I want to process!
 I want to output my processed files into the directory */u/scratch/c/choi/saliva/*.
+
+
+## How to use plasma and saliva analysis scripts
