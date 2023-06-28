@@ -110,3 +110,12 @@ I want to output my processed files into the directory */u/scratch/c/choi/saliva
 
 
 ## How to use plasma and saliva analysis scripts
+
+> NOTE:
+> Please make sure all the samples have been pre-processed before running the scripts!
+> Each script requires a different set of arguments. Please check each individual analysis script before!
+
+**peaks_n_valleys.py**
+
+1. Download peakdetect from this repo: https://github.com/avhn/peakdetect/.
+2. Run peaks_n_valleys.py after changing/renaming the input for samples within the python script. 
