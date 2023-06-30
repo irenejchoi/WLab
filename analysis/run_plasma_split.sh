@@ -1,4 +1,4 @@
-# UPDATED BY IRENE CHOI 18 Apr 2023
+# UPDATED BY IRENE CHOI 28 Jun 2023
 
 #!/bin/bash
 #$ -cwd
@@ -34,7 +34,9 @@ export PATH=$PATH:~/.local/bin
 module load anaconda3
 module load python
 conda activate dt_choi
+alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 1 --maxFragmentLength 39 -o $1$2"_processing/"$2"_junk.bam"
 alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 40 --maxFragmentLength 70 -o $1$2"_processing/"$2"_ultrashort.bam"
+alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 71 --maxFragmentLength 119 -o $1$2"_processing/"$2"_short.bam"
 alignmentSieve -b $1$2"_processing/"$2"_sorted_blacklisted.bam" --filterMetrics log.txt -p 8 --minFragmentLength 120 --maxFragmentLength 250 -o $1$2"_processing/"$2"_mononucleosomal.bam"
 conda deactivate
 
@@ -42,21 +44,27 @@ echo "___________US/MN___________"
 
 # sort bam
 module load samtools
+samtools sort -o $1$2"_processing/"$2"_sorted_junk.bam" $1$2"_processing/"$2"_junk.bam"
 samtools sort -o $1$2"_processing/"$2"_sorted_us.bam" $1$2"_processing/"$2"_ultrashort.bam"
+samtools sort -o $1$2"_processing/"$2"_sorted_short.bam" $1$2"_processing/"$2"_short.bam"
 samtools sort -o $1$2"_processing/"$2"_sorted_mn.bam" $1$2"_processing/"$2"_mononucleosomal.bam"
 
 echo "___________SORT_US/MN___________"
 
 # index bam
 module load samtools
+samtools index $1$2"_processing/"$2"_sorted_junk.bam"
 samtools index $1$2"_processing/"$2"_sorted_us.bam"
+samtools index $1$2"_processing/"$2"_sorted_short.bam"
 samtools index $1$2"_processing/"$2"_sorted_mn.bam"
 
 echo "___________INDEX_US/MN___________"
 
 # us/mn qualimap
 cd /u/home/c/choi/qualimap_v2.2.1/
+./qualimap bamqc -bam $1$2"_processing/"$2"_sorted_junk.bam" -outdir $1$2"_processing/"$2"_junk.QC" --java-mem-size=15G
 ./qualimap bamqc -bam $1$2"_processing/"$2"_sorted_us.bam" -outdir $1$2"_processing/"$2"_us.QC" --java-mem-size=15G
+./qualimap bamqc -bam $1$2"_processing/"$2"_sorted_short.bam" -outdir $1$2"_processing/"$2"_short.QC" --java-mem-size=15G
 ./qualimap bamqc -bam $1$2"_processing/"$2"_sorted_mn.bam" -outdir $1$2"_processing/"$2"_mn.QC" --java-mem-size=15G
 
 echo "___________QC3___________"
